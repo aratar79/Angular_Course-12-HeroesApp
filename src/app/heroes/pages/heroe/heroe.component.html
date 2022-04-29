@@ -1,1 +1,37 @@
-<p>heroe works!</p>
+<!-- <mat-grid-list cols="1" *ngIf="!heroe; else divHeroe">
+    <mat-grid-tile>
+        <mat-spinner></mat-spinner>
+    </mat-grid-tile>
+</mat-grid-list> -->
+
+<!-- <div fxLayout="row" fxLayoutAlign="space-around center" style="height:100%">
+    <mat-spinner diameter="50" strokeWidth="5"></mat-spinner>
+</div> -->
+
+<div class="loading-indicator" *ngIf="!heroe; else divHeroe">
+    <mat-progress-spinner mode="indeterminate" color="primary"></mat-progress-spinner>
+</div>
+
+<ng-template #divHeroe>
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="30px">
+
+        <div fxFlex="50" fxFlex.xs="100" class="text-center">
+            <h1>{{heroe.superhero}} <small>- {{heroe.alter_ego}}</small></h1>
+            <mat-divider></mat-divider>
+            <br>
+            <img [src]="heroe | imagen" alt="">
+        </div>
+        <div fxFlex="50" fxFlex.xs="100">
+            <h1 class="text-center">{{heroe.publisher}}</h1>
+            <mat-divider></mat-divider>
+            <mat-list>
+                <mat-list-item class="text-center">{{heroe.first_appearance}}</mat-list-item>
+                <mat-list-item>{{heroe.characters}}</mat-list-item>
+                <mat-list-item>{{heroe.publisher}}</mat-list-item>
+                <mat-list-item>{{heroe.alter_ego}}</mat-list-item>
+            </mat-list>
+            <button mat-button color="warn" (click)="volver()">volver...</button>
+        </div>
+
+    </div>
+</ng-template>
