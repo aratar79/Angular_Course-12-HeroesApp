@@ -13,7 +13,7 @@
                     matInput 
                     [(ngModel)]="termino"
                     [matAutocomplete]="auto"
-                    (input)="buscando()">
+                    (input)="buscando ()">
 
             <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
                 <mat-option *ngFor="let heroe of heroes" [value]="heroe">
