@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
+import { ConfirmComponent } from '../../components/confirm/confirm.component';
 import { Heroe, Publisher } from '../../interfaces/heroe.interface';
 import { HeroesService } from '../../services/heroes.service';
 
@@ -37,7 +39,8 @@ export class AgergarComponent implements OnInit {
     private heroesService: HeroesService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private snakBar: MatSnackBar
+    private snakBar: MatSnackBar,
+    private dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
@@ -53,7 +56,7 @@ export class AgergarComponent implements OnInit {
       .subscribe(heroe => this.heroe = heroe);
   }
 
-  guardar(): void  {
+  guardar(): void {
     if (this.heroe.superhero.trim().length === 0) {
       return;
     }
@@ -61,7 +64,7 @@ export class AgergarComponent implements OnInit {
     if (this.heroe.id) {
       this.heroesService.updateHeroe(this.heroe)
         .subscribe(resp => {
-          this.mostrarSnackBar('Registro actualizado','green-snackbar');
+          this.mostrarSnackBar('Registro actualizado', 'green-snackbar');
         });
     } else {
       this.heroesService.setHeroe(this.heroe)
@@ -72,15 +75,26 @@ export class AgergarComponent implements OnInit {
     }
   }
 
-  borrar(): void  {
-    this.heroesService.deleteHeroe(this.heroe.id!)
-      .subscribe( resp => {
-        this.router.navigate(['/heroes']);
+  borrar(): void {
+
+    const dialog = this.dialog.open(ConfirmComponent, {
+      data: { ...this.heroe }
+    });
+
+    dialog.afterClosed().subscribe(
+      (result) => {
+        if (result) {
+
+          this.heroesService.deleteHeroe(this.heroe.id!)
+            .subscribe(resp => {
+              this.router.navigate(['/heroes']);
+            });
+        }
       });
   }
 
   mostrarSnackBar(mensaje: string, color: string): void {
-    this.snakBar.open(mensaje, 'ok',{
+    this.snakBar.open(mensaje, 'ok', {
       duration: 2500,
       panelClass: [`${color}`]
     });
