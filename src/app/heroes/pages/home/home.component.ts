@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Auth } from 'src/app/auth/interfaces/auth.interface';
+import { AuthService } from 'src/app/auth/services/auth.service';
 import { HeroesService } from '../../services/heroes.service';
 
 @Component({
@@ -8,12 +11,21 @@ import { HeroesService } from '../../services/heroes.service';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private heroesService: HeroesService) { }
+  get auth(): Auth {
+    return this.authService.auth;
+  }
+
+  constructor(
+
+    private router: Router,
+    private authService: AuthService
+    ) { }
 
   ngOnInit(): void {
-    // this.heroesService.getHeroes()
-    //   //.subscribe(resp => console.log(resp))
-    //   .subscribe(console.log);
+  }
+
+  logout() {
+    this.router.navigate(['./auth']);
   }
 
 }
